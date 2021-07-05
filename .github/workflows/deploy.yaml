@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Version
+        id: version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/*/}
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup - gcloud / gsutil
@@ -21,6 +24,6 @@ jobs:
           gcloud auth configure-docker
           gcloud config set run/region us-central1
       - name: Build
-        run: docker build . -t gcr.io/joshcarp/cloud-spanner-emulator
+        run: docker build . -t gcr.io/joshcarp/pkgsite:${{steps.version.outputs.VERSION}}
       - name: Deploy
-        run: docker push gcr.io/joshcarp/cloud-spanner-emulator
+        run: docker push gcr.io/joshcarp/pkgsite:${{steps.version.outputs.VERSION}}
