@@ -1,0 +1,9 @@
+version: "3"
+services:
+  pkgsite:
+    build:
+      dockerfile: "pkgsite.Dockerfile"
+      context: "."
+    command: "/pkgsite -direct_proxy -proxy_url https://proxy.golang.org"
+    ports:
+      - "8080:8080"
